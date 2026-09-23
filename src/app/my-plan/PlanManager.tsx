@@ -3,14 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Check,
-  Clock3,
-  Flame,
-  Star,
-  X,
-  ChevronDown,
-} from "lucide-react";
+import { Check, Clock3, Flame, Star, X, ChevronDown } from "lucide-react";
 import { toast } from "react-toastify";
 
 import type { Workout } from "@/app/types/workout";
@@ -30,21 +23,17 @@ export default function MyPlanContent() {
 
   const loadData = () => {
     try {
-      const storedPlan = JSON.parse(
-        localStorage.getItem("today_plan") || "[]"
-      );
+      const storedPlan = JSON.parse(localStorage.getItem("today_plan") || "[]");
       const storedSaved = JSON.parse(
-        localStorage.getItem("saved_workouts") || "[]"
+        localStorage.getItem("saved_workouts") || "[]",
       );
       const storedCompleted = JSON.parse(
-        localStorage.getItem("completed_workouts") || "[]"
+        localStorage.getItem("completed_workouts") || "[]",
       );
 
       setPlan(Array.isArray(storedPlan) ? storedPlan : []);
       setSaved(Array.isArray(storedSaved) ? storedSaved : []);
-      setCompleted(
-        Array.isArray(storedCompleted) ? storedCompleted : []
-      );
+      setCompleted(Array.isArray(storedCompleted) ? storedCompleted : []);
     } catch (error) {
       console.error("Failed to load workout data:", error);
     } finally {
@@ -75,7 +64,7 @@ export default function MyPlanContent() {
 
     localStorage.setItem(
       "completed_workouts",
-      JSON.stringify(updatedCompleted)
+      JSON.stringify(updatedCompleted),
     );
 
     if (alreadyDone) {
@@ -104,7 +93,7 @@ export default function MyPlanContent() {
     setCompleted(updatedCompleted);
     localStorage.setItem(
       "completed_workouts",
-      JSON.stringify(updatedCompleted)
+      JSON.stringify(updatedCompleted),
     );
 
     window.dispatchEvent(new Event("storage-update"));
@@ -115,16 +104,15 @@ export default function MyPlanContent() {
       exercises: plan.length,
       minutes: plan.reduce(
         (total, workout) => total + Number(workout.duration || 0),
-        0
+        0,
       ),
       calories: plan.reduce(
         (total, workout) => total + Number(workout.caloriesBurned || 0),
-        0
+        0,
       ),
     };
   }, [plan]);
 
-  // Current List Sorting Logic
   const sortedWorkouts = useMemo(() => {
     const list = [...(activeTab === "plan" ? plan : saved)];
 
@@ -151,8 +139,6 @@ export default function MyPlanContent() {
   return (
     <main className="min-h-screen bg-[#0d0e12] text-white">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
-        
-        {/* Header */}
         <div className="mb-5 sm:mb-6">
           <h1 className="font-oswald text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tight">
             MY PLAN
@@ -162,7 +148,6 @@ export default function MyPlanContent() {
           </p>
         </div>
 
-        {/* Metrics Banner */}
         <div className="bg-[#13151c] border border-[#1e2230] rounded-xl p-4 sm:p-5 mb-6 sm:mb-8 grid grid-cols-3 gap-2 sm:gap-4 text-left">
           <div>
             <p className="text-neutral-400 text-[9px] sm:text-xs font-bold uppercase tracking-wider">
@@ -192,9 +177,8 @@ export default function MyPlanContent() {
           </div>
         </div>
 
-        {/* Navigation Tabs & Sort Dropdown */}
         <div className="flex flex-row items-center justify-between border-b border-[#1e2230] pb-3 mb-6 gap-2">
-          {/* Tabs */}
+         
           <div className="flex gap-1.5 sm:gap-2">
             <button
               onClick={() => setActiveTab("plan")}
@@ -219,7 +203,7 @@ export default function MyPlanContent() {
             </button>
           </div>
 
-          {/* Sort Dropdown */}
+        
           <div className="relative">
             <button
               onClick={() => setIsSortOpen(!isSortOpen)}
@@ -239,7 +223,6 @@ export default function MyPlanContent() {
               />
             </button>
 
-            {/* Dropdown Menu */}
             {isSortOpen && (
               <>
                 <div
@@ -264,7 +247,7 @@ export default function MyPlanContent() {
                         <span>{sortLabels[option]}</span>
                         {sortBy === option && <Check size={12} />}
                       </button>
-                    )
+                    ),
                   )}
                 </div>
               </>
@@ -272,7 +255,6 @@ export default function MyPlanContent() {
           </div>
         </div>
 
-        {/* Workouts List */}
         {loading ? (
           <div className="min-h-60 flex flex-col items-center justify-center">
             <div className="w-8 h-8 border-2 border-neutral-700 border-t-[#ccff00] rounded-full animate-spin" />
@@ -299,8 +281,6 @@ export default function MyPlanContent() {
   );
 }
 
-/* ================= EMPTY STATE ================= */
-
 function EmptyState() {
   return (
     <div className="min-h-60 flex flex-col items-center justify-center text-center bg-[#13151c] border border-[#1e2230] rounded-xl px-4 py-10 sm:py-12">
@@ -322,8 +302,6 @@ function EmptyState() {
   );
 }
 
-/* ================= WORKOUT CARD (RESPONSIVE) ================= */
-
 function WorkoutCard({
   workout,
   isDone,
@@ -344,8 +322,6 @@ function WorkoutCard({
       }`}
     >
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4">
-        
-        {/* Left Side: Image & Info */}
         <div className="flex items-center gap-3 sm:gap-3.5 min-w-0">
           <div className="relative w-14 h-14 sm:w-16 sm:h-16 shrink-0 rounded-lg overflow-hidden bg-[#0d0e12] border border-[#1e2230]">
             <Image
@@ -375,7 +351,6 @@ function WorkoutCard({
               {workout.equipment}
             </p>
 
-            {/* Stats Row */}
             <div className="flex items-center gap-2.5 sm:gap-3 mt-1.5 text-[10px] sm:text-[11px] text-neutral-400">
               <span className="flex items-center gap-1">
                 <Clock3 size={12} />
@@ -395,7 +370,7 @@ function WorkoutCard({
           </div>
         </div>
 
-        {/* Right Side: Action Buttons (Responsive Grid/Flex for Mobile & Tablet) */}
+        
         <div className="flex items-center justify-between md:justify-end gap-2 w-full md:w-auto border-t md:border-t-0 border-[#1e2230] pt-2.5 md:pt-0">
           <div className="flex items-center gap-2 w-full md:w-auto justify-end">
             <Link
@@ -424,7 +399,6 @@ function WorkoutCard({
             </button>
           </div>
         </div>
-
       </div>
     </div>
   );
