@@ -1,19 +1,41 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import dumbbellIcon from "@/app/assets/logo.png";
 
-interface NavbarProps {
-  planCount?: number;
-  savedCount?: number;
-}
-
-export default function Navbar({ planCount = 0, savedCount = 0 }: NavbarProps) {
+export default function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const [planCount, setPlanCount] = useState(0);
+  const [savedCount, setSavedCount] = useState(0);
+
+  const updateCounts = () => {
+    try {
+      const plan = JSON.parse(localStorage.getItem("today_plan") || "[]");
+
+      const saved = JSON.parse(localStorage.getItem("saved_workouts") || "[]");
+
+      setPlanCount(plan.length);
+      setSavedCount(saved.length);
+    } catch (error) {
+      console.error("Failed to read localStorage:", error);
+    }
+  };
+
+  useEffect(() => {
+    updateCounts();
+
+    window.addEventListener("storage-update", updateCounts);
+    window.addEventListener("storage", updateCounts);
+
+    return () => {
+      window.removeEventListener("storage-update", updateCounts);
+      window.removeEventListener("storage", updateCounts);
+    };
+  }, []);
 
   const isWorkoutActive = pathname === "/";
   const isMyPlanActive = pathname === "/my-plan";
@@ -22,11 +44,7 @@ export default function Navbar({ planCount = 0, savedCount = 0 }: NavbarProps) {
     <nav className="bg-[#1C1F26] border-b border-neutral-800 text-white sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo Section */}
-          <Link
-            href="/"
-            className="flex items-center gap-2.5 tracking-wider text-lg sm:text-xl"
-          >
+          <Link href="/" className="flex items-center gap-2.5 tracking-wider">
             <Image
               src={dumbbellIcon}
               alt="FitLog Logo"
@@ -34,12 +52,12 @@ export default function Navbar({ planCount = 0, savedCount = 0 }: NavbarProps) {
               height={22}
               className="h-5 w-5 object-contain"
             />
-            <span className="font-oswald font-extrabold uppercase tracking-widest text-white text-xl leading-none">
+
+            <span className="font-oswald font-extrabold uppercase tracking-widest text-white text-xl">
               FITLOG
             </span>
           </Link>
 
-          {/* Desktop Navigation Links */}
           <div className="hidden md:flex items-center gap-4">
             <Link
               href="/"
@@ -51,6 +69,7 @@ export default function Navbar({ planCount = 0, savedCount = 0 }: NavbarProps) {
             >
               Workouts
             </Link>
+
             <Link
               href="/my-plan"
               className={`text-sm font-medium transition-all px-4 py-1.5 rounded-full ${
@@ -63,37 +82,36 @@ export default function Navbar({ planCount = 0, savedCount = 0 }: NavbarProps) {
             </Link>
           </div>
 
-          {/* Desktop Right Counters (Links to /my-plan) */}
           <div className="hidden sm:flex items-center gap-5">
-            {/* Plan Badge Counter */}
             <Link
               href="/my-plan"
               className="flex items-center gap-2 text-sm font-medium text-white hover:opacity-80 transition"
             >
               <span>Plan</span>
+
               <span className="bg-[#ccff00] text-black text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
                 {planCount}
               </span>
             </Link>
 
-            {/* Saved Badge Counter */}
             <Link
               href="/my-plan"
               className="flex items-center gap-2 text-sm font-medium text-white hover:opacity-80 transition"
             >
               <span>Saved</span>
+
               <span className="bg-neutral-800 text-white border border-neutral-700 text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
                 {savedCount}
               </span>
             </Link>
           </div>
 
-          {/* Mobile Right Controls */}
           <div className="flex sm:hidden items-center gap-3">
             <Link href="/my-plan" className="flex items-center gap-2 text-xs">
               <span className="bg-[#1c2600] text-[#ccff00] font-bold px-2 py-0.5 rounded-full">
                 P {planCount}
               </span>
+
               <span className="bg-neutral-800 text-white border border-neutral-700 font-bold px-2 py-0.5 rounded-full">
                 S {savedCount}
               </span>
@@ -101,7 +119,8 @@ export default function Navbar({ planCount = 0, savedCount = 0 }: NavbarProps) {
 
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-1.5 text-neutral-400 hover:text-white focus:outline-none"
+              className="p-1.5 text-neutral-400 hover:text-white"
+              aria-label="Toggle menu"
             >
               {isOpen ? "✕" : "☰"}
             </button>
@@ -109,9 +128,8 @@ export default function Navbar({ planCount = 0, savedCount = 0 }: NavbarProps) {
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
       {isOpen && (
-        <div className="md:hidden bg-[#1C1F26] border-b border-neutral-800 px-4 pt-3 pb-5 space-y-2">
+        <div className="md:hidden bg-[#1C1F26] border-t border-neutral-800 px-4 py-4 space-y-2">
           <Link
             href="/"
             onClick={() => setIsOpen(false)}
@@ -123,6 +141,7 @@ export default function Navbar({ planCount = 0, savedCount = 0 }: NavbarProps) {
           >
             Workouts
           </Link>
+
           <Link
             href="/my-plan"
             onClick={() => setIsOpen(false)}

@@ -1,134 +1,152 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getWorkoutById } from "@/app/lib/workout";
+import {
+  ArrowLeft,
+  Clock3,
+  Flame,
+  Star,
+  Dumbbell,
+  BarChart3,
+  Repeat,
+  ListChecks,
+} from "lucide-react";
 
-interface WorkoutDetailProps {
+import { getWorkouts } from "@/app/lib/workout";
+import ActionButtons from "@/app/workout/[id]/ActionButtons";
+
+interface WorkoutDetailsPageProps {
   params: Promise<{
     id: string;
   }>;
 }
 
-export default async function WorkoutDetailPage({
+export default async function WorkoutDetailsPage({
   params,
-}: WorkoutDetailProps) {
+}: WorkoutDetailsPageProps) {
   const { id } = await params;
-  const workout = await getWorkoutById(id);
+
+  const workouts = await getWorkouts();
+  const workout = workouts.find((item) => String(item.id) === String(id));
 
   if (!workout) {
     notFound();
   }
 
   return (
-    <main className="min-h-screen bg-[#07080a] text-white p-4 sm:p-8 lg:p-12 flex items-center justify-center relative overflow-hidden">
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#ccff00]/5 blur-[120px] pointer-events-none rounded-full" />
+    <main className="min-h-screen bg-[#07080a] text-white">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 text-xs text-neutral-400 hover:text-white transition mb-4 font-medium"
+        >
+          <ArrowLeft size={14} />
+          Back to workouts
+        </Link>
 
-      <div className="max-w-6xl w-full relative z-10">
-        <div className="bg-[#101218]/90 backdrop-blur-md border border-[#1e222d] hover:border-[#2a2f3e] transition-colors duration-300 rounded-3xl p-5 sm:p-8 lg:p-10 shadow-2xl flex flex-col lg:flex-row gap-8 lg:gap-10 items-stretch">
-          <div className="relative w-full lg:w-1/2 h-[300px] sm:h-[420px] lg:h-auto lg:min-h-[540px] rounded-2xl overflow-hidden bg-[#161822] border border-[#222634] group shrink-0">
-            <Image
-              src={workout.image}
-              alt={workout.name}
-              fill
-              priority
-              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 50vw"
-              className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#101218]/60 via-transparent to-transparent opacity-80" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 items-start">
+          <div className="w-full md:sticky md:top-6">
+            <div className="relative w-full aspect-[4/3] md:aspect-square rounded-xl md:rounded-2xl overflow-hidden bg-[#12141c] border border-[#1e2230]">
+              <Image
+                src={workout.image}
+                alt={workout.name}
+                fill
+                priority
+                sizes="(max-width: 768px) 100vw, 40vw"
+                className="object-cover"
+              />
+            </div>
           </div>
 
-          <div className="w-full lg:w-1/2 flex flex-col justify-between space-y-6">
+          <div className="flex flex-col justify-between">
             <div>
-              <h1 className="font-oswald text-3xl sm:text-4xl lg:text-5xl font-extrabold uppercase tracking-wide text-white leading-tight">
-                {workout.name}
-              </h1>
-
-              <p className="text-neutral-400 text-xs sm:text-sm lg:text-base mt-2.5 leading-relaxed font-normal">
-                {workout.description}
-              </p>
-
-              <div className="flex flex-wrap gap-2 mt-4">
-                {workout.muscleGroups?.map((group: string, index: number) => (
+              <div className="flex flex-wrap gap-1.5 mb-2.5">
+                {workout.muscleGroups.map((group) => (
                   <span
-                    key={index}
-                    className="text-[11px] sm:text-xs font-black uppercase tracking-wider bg-[#ccff00] text-black px-3.5 py-1.5 rounded-full shadow-sm shadow-[#ccff00]/20"
+                    key={group}
+                    className="bg-[#ccff00] text-black px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider"
                   >
                     {group}
                   </span>
                 ))}
               </div>
 
-              <div className="mt-6 border-t border-b border-[#1c202b] divide-y divide-[#1c202b] text-xs sm:text-sm">
-                <div className="flex justify-between py-2.5 text-neutral-400">
-                  <span className="uppercase tracking-wider font-semibold text-[11px] sm:text-xs">
-                    EQUIPMENT
-                  </span>
-                  <span className="text-white font-medium">
-                    {workout.equipment}
-                  </span>
-                </div>
-                <div className="flex justify-between py-2.5 text-neutral-400">
-                  <span className="uppercase tracking-wider font-semibold text-[11px] sm:text-xs">
-                    DIFFICULTY
-                  </span>
-                  <span className="text-white font-medium">
-                    {workout.difficulty || "Intermediate"}
-                  </span>
-                </div>
-                <div className="flex justify-between py-2.5 text-neutral-400">
-                  <span className="uppercase tracking-wider font-semibold text-[11px] sm:text-xs">
-                    SETS
-                  </span>
-                  <span className="text-white font-medium">
-                    {workout.sets || 4}
-                  </span>
-                </div>
-                <div className="flex justify-between py-2.5 text-neutral-400">
-                  <span className="uppercase tracking-wider font-semibold text-[11px] sm:text-xs">
-                    REPS
-                  </span>
-                  <span className="text-white font-medium">
-                    {workout.reps || "6 - 8"}
-                  </span>
-                </div>
-                <div className="flex justify-between py-2.5 text-neutral-400">
-                  <span className="uppercase tracking-wider font-semibold text-[11px] sm:text-xs">
-                    DURATION
-                  </span>
-                  <span className="text-white font-medium">
-                    {workout.duration} min
-                  </span>
-                </div>
-                <div className="flex justify-between py-2.5 text-neutral-400">
-                  <span className="uppercase tracking-wider font-semibold text-[11px] sm:text-xs">
-                    CALORIES
-                  </span>
-                  <span className="text-white font-medium">
-                    {workout.caloriesBurned} kcal
-                  </span>
-                </div>
-                <div className="flex justify-between py-2.5 text-neutral-400">
-                  <span className="uppercase tracking-wider font-semibold text-[11px] sm:text-xs">
-                    RATING
-                  </span>
-                  <span className="text-[#ccff00] font-bold text-sm sm:text-base">
-                    ★ {workout.rating}
-                  </span>
+              <h1 className="font-oswald text-2xl sm:text-3xl md:text-4xl font-black uppercase leading-tight tracking-tight text-white">
+                {workout.name}
+              </h1>
+
+              <p className="text-neutral-400 text-xs leading-relaxed mt-2 max-w-xl">
+                {workout.description}
+              </p>
+
+              <div className="mt-5">
+                <h2 className="font-oswald text-sm font-extrabold uppercase tracking-wider mb-2 text-neutral-200">
+                  KEY SPECS
+                </h2>
+
+                <div className="border border-[#1f2433] rounded-xl overflow-hidden bg-[#10121a]">
+                  <SpecRow
+                    icon={<Dumbbell size={14} />}
+                    label="Equipment"
+                    value={workout.equipment}
+                  />
+                  <SpecRow
+                    icon={<BarChart3 size={14} />}
+                    label="Difficulty"
+                    value={workout.difficulty || "Intermediate"}
+                  />
+                  <SpecRow
+                    icon={<ListChecks size={14} />}
+                    label="Sets"
+                    value={String(workout.sets || 4)}
+                  />
+                  <SpecRow
+                    icon={<Repeat size={14} />}
+                    label="Reps"
+                    value={workout.reps || "6 - 8"}
+                  />
+                  <SpecRow
+                    icon={<Clock3 size={14} />}
+                    label="Duration"
+                    value={`${workout.duration} min`}
+                  />
+                  <SpecRow
+                    icon={<Flame size={14} />}
+                    label="Calories"
+                    value={`${workout.caloriesBurned} kcal`}
+                  />
+
+                  <SpecRow
+                    icon={
+                      <Star
+                        size={14}
+                        className="text-[#ccff00]"
+                        fill="#ccff00"
+                      />
+                    }
+                    label="Rating"
+                    value={String(workout.rating)}
+                    last
+                  />
                 </div>
               </div>
 
               {workout.instructions && workout.instructions.length > 0 && (
-                <div className="mt-6">
-                  <h2 className="font-oswald text-xs sm:text-sm font-bold uppercase tracking-wider text-white mb-3">
+                <div className="mt-5">
+                  <h2 className="font-oswald text-sm font-extrabold uppercase tracking-wider mb-2.5 text-neutral-200">
                     INSTRUCTIONS
                   </h2>
-                  <ol className="space-y-2 text-neutral-300 text-xs sm:text-sm leading-relaxed">
-                    {workout.instructions.map((step: string, idx: number) => (
-                      <li key={idx} className="flex gap-3">
-                        <span className="text-[#ccff00] font-bold shrink-0">
-                          {idx + 1}.
+
+                  <ol className="space-y-2">
+                    {workout.instructions.map((instruction, index) => (
+                      <li key={index} className="flex gap-2.5 items-start">
+                        <span className="shrink-0 w-5 h-5 rounded-full bg-[#ccff00] text-black flex items-center justify-center text-[10px] font-black">
+                          {index + 1}
                         </span>
-                        <span>{step}</span>
+
+                        <p className="text-xs text-neutral-400 leading-relaxed pt-0.5">
+                          {instruction}
+                        </p>
                       </li>
                     ))}
                   </ol>
@@ -136,18 +154,41 @@ export default async function WorkoutDetailPage({
               )}
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center gap-3 pt-4">
-              <button className="w-full sm:flex-1 bg-[#ccff00] hover:bg-[#d8ff33] active:scale-[0.98] text-black font-extrabold text-xs sm:text-sm uppercase tracking-wider py-3.5 px-5 rounded-xl transition duration-200 shadow-lg shadow-[#ccff00]/10 flex items-center justify-center gap-2">
-                <span className="text-base leading-none">+</span> Add to today's
-                plan
-              </button>
-              <button className="w-full sm:w-auto bg-[#161822] hover:bg-[#1f2230] active:scale-[0.98] border border-[#252938] text-white text-xs sm:text-sm font-bold py-3.5 px-6 rounded-xl transition duration-200 flex items-center justify-center gap-2">
-                <span>🔖</span> Save for later
-              </button>
-            </div>
+            <ActionButtons workout={workout} />
           </div>
         </div>
       </div>
     </main>
+  );
+}
+
+function SpecRow({
+  icon,
+  label,
+  value,
+  last = false,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  last?: boolean;
+}) {
+  return (
+    <div
+      className={`flex items-center justify-between gap-3 px-3.5 py-2 ${
+        !last ? "border-b border-[#1f2433]" : ""
+      }`}
+    >
+      <div className="flex items-center gap-2 text-neutral-400">
+        <span>{icon}</span>
+        <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider">
+          {label}
+        </span>
+      </div>
+
+      <span className="text-xs font-semibold text-neutral-100 text-right">
+        {value}
+      </span>
+    </div>
   );
 }
