@@ -22,6 +22,7 @@ export default function Navbar({ planCount = 0, savedCount = 0 }: NavbarProps) {
     <nav className="bg-[#1C1F26] border-b border-neutral-800 text-white sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
+          {/* Logo Section */}
           <Link
             href="/"
             className="flex items-center gap-2.5 tracking-wider text-lg sm:text-xl"
@@ -33,12 +34,12 @@ export default function Navbar({ planCount = 0, savedCount = 0 }: NavbarProps) {
               height={22}
               className="h-5 w-5 object-contain"
             />
-
             <span className="font-oswald font-extrabold uppercase tracking-widest text-white text-xl leading-none">
               FITLOG
             </span>
           </Link>
 
+          {/* Desktop Navigation Links */}
           <div className="hidden md:flex items-center gap-4">
             <Link
               href="/"
@@ -62,7 +63,9 @@ export default function Navbar({ planCount = 0, savedCount = 0 }: NavbarProps) {
             </Link>
           </div>
 
+          {/* Desktop Right Counters (Links to /my-plan) */}
           <div className="hidden sm:flex items-center gap-5">
+            {/* Plan Badge Counter */}
             <Link
               href="/my-plan"
               className="flex items-center gap-2 text-sm font-medium text-white hover:opacity-80 transition"
@@ -73,6 +76,7 @@ export default function Navbar({ planCount = 0, savedCount = 0 }: NavbarProps) {
               </span>
             </Link>
 
+            {/* Saved Badge Counter */}
             <Link
               href="/my-plan"
               className="flex items-center gap-2 text-sm font-medium text-white hover:opacity-80 transition"
@@ -84,15 +88,16 @@ export default function Navbar({ planCount = 0, savedCount = 0 }: NavbarProps) {
             </Link>
           </div>
 
+          {/* Mobile Right Controls */}
           <div className="flex sm:hidden items-center gap-3">
-            <div className="flex items-center gap-2 text-xs">
+            <Link href="/my-plan" className="flex items-center gap-2 text-xs">
               <span className="bg-[#1c2600] text-[#ccff00] font-bold px-2 py-0.5 rounded-full">
                 P {planCount}
               </span>
               <span className="bg-neutral-800 text-white border border-neutral-700 font-bold px-2 py-0.5 rounded-full">
                 S {savedCount}
               </span>
-            </div>
+            </Link>
 
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -104,6 +109,7 @@ export default function Navbar({ planCount = 0, savedCount = 0 }: NavbarProps) {
         </div>
       </div>
 
+      {/* Mobile Drawer Menu */}
       {isOpen && (
         <div className="md:hidden bg-[#1C1F26] border-b border-neutral-800 px-4 pt-3 pb-5 space-y-2">
           <Link

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const page = () => {
+const MyPlan = () => {
     return (
         <div>
             <h2>my plan</h2>
@@ -8,4 +8,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default MyPlan;
