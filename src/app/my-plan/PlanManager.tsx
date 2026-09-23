@@ -81,12 +81,12 @@ export default function MyPlanContent() {
       const updatedPlan = plan.filter((item) => item.id !== id);
       setPlan(updatedPlan);
       localStorage.setItem("today_plan", JSON.stringify(updatedPlan));
-      toast.success("Workout removed from today's plan");
+      toast.warning("Workout removed from today's plan");
     } else {
       const updatedSaved = saved.filter((item) => item.id !== id);
       setSaved(updatedSaved);
       localStorage.setItem("saved_workouts", JSON.stringify(updatedSaved));
-      toast.success("Workout removed from saved");
+      toast.warning("Workout removed from saved");
     }
 
     const updatedCompleted = completed.filter((item) => item !== id);
