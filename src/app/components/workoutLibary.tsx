@@ -6,6 +6,35 @@ import { Workout } from "@/app/types/workout";
 export default async function WorkoutLibrary() {
   const workouts: Workout[] = await getWorkouts();
 
+  if (!workouts || workouts.length === 0) {
+    return (
+      <section
+        id="library"
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12"
+      >
+        <div className="mb-6 sm:mb-8 text-left">
+          <h2 className="font-oswald text-2xl sm:text-3xl font-extrabold uppercase text-white tracking-wider">
+            THE LIBRARY
+          </h2>
+
+          <p className="text-neutral-400 text-xs sm:text-sm mt-1">
+            Twelve lifts covering every major muscle group.
+          </p>
+        </div>
+
+        <div className="bg-[#15171e] border border-[#222630] rounded-2xl py-16 px-6 text-center">
+          <h3 className="font-oswald text-xl sm:text-2xl font-black uppercase text-white">
+            UNABLE TO LOAD WORKOUTS
+          </h3>
+
+          <p className="text-neutral-400 text-sm mt-2">
+            Please refresh the page and try again.
+          </p>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section
       id="library"
@@ -15,13 +44,14 @@ export default async function WorkoutLibrary() {
         <h2 className="font-oswald text-2xl sm:text-3xl font-extrabold uppercase text-white tracking-wider">
           THE LIBRARY
         </h2>
+
         <p className="text-neutral-400 text-xs sm:text-sm mt-1">
           Twelve lifts covering every major muscle group.
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-        {workouts.map((workout: Workout) => (
+        {workouts.map((workout) => (
           <Link
             key={workout.id}
             href={`/workout/${workout.id}`}
@@ -40,10 +70,11 @@ export default async function WorkoutLibrary() {
 
             <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
               <div>
+                {/* Category Tags */}
                 <div className="flex flex-wrap gap-2 mb-3">
-                  {workout.muscleGroups.map((group: string, index: number) => (
+                  {workout.muscleGroups.map((group, index) => (
                     <span
-                      key={index}
+                      key={`${group}-${index}`}
                       className="text-[11px] font-black uppercase tracking-wider bg-[#ccff00] text-black px-3 py-1 rounded-full leading-none"
                     >
                       {group}
@@ -61,6 +92,7 @@ export default async function WorkoutLibrary() {
               </div>
 
               <div className="pt-3 border-t border-neutral-800/60 flex items-center gap-5 text-xs text-neutral-400 font-medium">
+                {/* Duration */}
                 <span className="flex items-center gap-1.5">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -105,6 +137,7 @@ export default async function WorkoutLibrary() {
                       d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
                     />
                   </svg>
+
                   {workout.rating}
                 </span>
               </div>
