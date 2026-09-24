@@ -1,47 +1,93 @@
+<div align="center">
+
 # 🏋️ FitLog
 
-> **TRAIN WITH INTENT. LOG EVERY SET.**
+### **TRAIN WITH INTENT. LOG EVERY SET.**
 
-A modern, responsive workout library and personal workout planning application built with **Next.js, TypeScript, and Tailwind CSS**.
+A modern and responsive workout management application built with **Next.js, TypeScript, and Tailwind CSS**.
 
-FitLog helps users discover workouts, view detailed exercise information, build a daily workout plan, save exercises for later, and track completed workouts.
+<br />
+
+<a href="https://fit-log-plum.vercel.app/">
+  <img src="https://img.shields.io/badge/🚀%20LIVE%20DEMO-OPEN%20FITLOG-7C3AED?style=for-the-badge&labelColor=111827" alt="Live Demo" />
+</a>
+
+<a href="https://github.com/fahimrahat58/Fit-Log">
+  <img src="https://img.shields.io/badge/GITHUB-REPOSITORY-181717?style=for-the-badge&logo=github" alt="GitHub Repository" />
+</a>
+
+<br /><br />
+
+<img src="https://img.shields.io/badge/Next.js-16-000000?style=flat-square&logo=next.js" alt="Next.js" />
+<img src="https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black" alt="React" />
+<img src="https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
+<img src="https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
+
+</div>
 
 ---
 
 ## 🌐 Live Demo
 
-🔗 **Live Project:** https://fit-log-plum.vercel.app/
+<div align="center">
+
+### 🚀 Try FitLog Live
+
+<a href="https://fit-log-plum.vercel.app/">
+  <img src="https://img.shields.io/badge/🔥%20VISIT%20FITLOG%20LIVE-7C3AED?style=for-the-badge&logo=vercel&logoColor=white" alt="Visit FitLog Live" />
+</a>
+
+<br /><br />
+
+**🔗 https://fit-log-plum.vercel.app/**
+
+</div>
 
 ---
 
-## 📖 About FitLog
+## 📌 Project Name
 
-**FitLog** is a dark-themed workout management application designed to make workout planning simple and organized.
+# 🏋️ FitLog
 
-Users can explore a workout library, view detailed exercise information, add workouts to **Today's Plan**, save exercises for later, mark workouts as completed, and manage their daily routine from a single dashboard.
-
-Workout data is fetched from a REST API, while **localStorage** keeps the user's plan, saved workouts, and completed workout status available even after refreshing the browser.
+> **TRAIN WITH INTENT. LOG EVERY SET.**
 
 ---
 
-## ✨ Features
+## 📝 Short Description
 
-### 🏋️ Workout Library
+**FitLog** is a modern workout library and personal workout planning application.
 
-* Browse workouts from the FitLog API
-* View workouts by muscle group
-* Responsive workout card layout
-* Workout duration, calories, and rating
-* Search and sort workout entries
-* Click any workout to view its details
+Users can explore workouts, search and sort exercises, view detailed workout information, create a personalized **Today's Plan**, save workouts for later, and mark completed workouts.
 
-### 🔎 Workout Details
+The application uses a REST API for workout data and **localStorage** to persist the user's workout plan, saved workouts, and completion status.
 
-Each workout has a dedicated dynamic details page with:
+---
+
+## ✨ Key Features
+
+### 1. 🏋️ Workout Library
+
+Browse a collection of workouts with useful information such as:
+
+* Workout name
+* Muscle group
+* Difficulty
+* Duration
+* Calories
+* Rating
+* Workout image
+
+Users can also search and sort workout entries.
+
+---
+
+### 2. 🔎 Workout Details
+
+Each workout has a dedicated dynamic details page containing:
 
 * Workout image
-* Workout description
-* Muscle group tags
+* Description
+* Muscle groups
 * Equipment
 * Difficulty
 * Sets & reps
@@ -50,9 +96,11 @@ Each workout has a dedicated dynamic details page with:
 * Rating
 * Step-by-step instructions
 
-### 📋 Today's Workout Plan
+---
 
-Users can create their own daily workout plan.
+### 3. 📋 Today's Workout Plan
+
+Users can create and manage their own daily workout plan.
 
 The **My Plan** dashboard displays:
 
@@ -60,65 +108,82 @@ The **My Plan** dashboard displays:
 * Total workout minutes
 * Total calories
 * Planned workouts
-* Workout details
 * Completion status
-* Remove action
+* Remove workout option
 
-### 🔖 Save for Later
+---
 
-Users can save workouts and access them from the **Saved** tab.
+### 4. 🔖 Save & Track Workouts
 
-Saved workouts remain available through browser localStorage.
+Users can save their favorite workouts and access them later from the **Saved** section.
 
-### ✅ Workout Completion
+They can also mark planned workouts as **Done** to track their completed exercises.
 
-Users can mark planned workouts as **Done**.
+Workout information is stored using browser **localStorage**.
 
-Toast notifications provide feedback when users:
+---
 
-* Add a workout
-* Save a workout
-* Mark a workout as completed
-* Remove a workout
+### 5. 📱 Fully Responsive Design
 
-### 📊 Sorting & Management
-
-Workouts can be sorted by:
-
-* Duration
-* Calories
-* Rating
-
-Users can also switch between:
-
-* **Today's Plan**
-* **Saved**
-
-### 📱 Fully Responsive
-
-FitLog is designed for:
+FitLog is designed to provide a smooth experience across:
 
 * 📱 Mobile
 * 📲 Tablet
 * 💻 Desktop
 
-The navbar, hero section, workout grid, details page, buttons, and plan layout adapt to different screen sizes.
+The navbar, hero section, workout cards, details page, buttons, and plan dashboard are responsive across different screen sizes.
 
 ---
 
-## 🛠️ Technologies
+## 🛠️ Technologies Used
 
 | Technology         | Purpose                      |
 | ------------------ | ---------------------------- |
 | **Next.js 16**     | React framework & App Router |
-| **React 19**       | Interactive UI               |
+| **React 19**       | Interactive user interface   |
 | **TypeScript**     | Type-safe development        |
 | **Tailwind CSS 4** | Styling & responsive design  |
-| **Lucide React**   | UI icons                     |
+| **Lucide React**   | Modern UI icons              |
 | **React Toastify** | Toast notifications          |
 | **REST API**       | Workout data                 |
 | **LocalStorage**   | Client-side data persistence |
 | **Next.js Image**  | Optimized image rendering    |
+
+---
+
+## 📡 API
+
+FitLog uses a REST API to retrieve workout information.
+
+### All Workouts
+
+```text
+https://api.abcz.workers.dev/api/fitlog
+```
+
+### Single Workout
+
+```text
+https://api.abcz.workers.dev/api/fitlog/:id
+```
+
+The workout ID is used to retrieve individual workout information.
+
+---
+
+## 💾 Local Storage
+
+FitLog uses browser **localStorage** to persist user-specific workout information.
+
+The application stores:
+
+```text
+today_plan
+saved_workouts
+completed_workouts
+```
+
+This allows workout data to remain available after refreshing or reopening the browser.
 
 ---
 
@@ -166,13 +231,13 @@ src/
 ### 1. Clone the Repository
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/fahimrahat58/Fit-Log.git
 ```
 
 ### 2. Navigate to the Project
 
 ```bash
-cd Fit-Log-main
+cd Fit-Log
 ```
 
 ### 3. Install Dependencies
@@ -231,43 +296,9 @@ Checks the project for ESLint issues.
 
 ---
 
-## 📡 API
-
-FitLog uses the following REST API to retrieve workout information:
-
-```text
-https://api.abcz.workers.dev/api/fitlog
-```
-
-Individual workouts are accessed using their unique workout ID.
-
-Example:
-
-```text
-https://api.abcz.workers.dev/api/fitlog/:id
-```
-
----
-
-## 💾 Local Storage
-
-FitLog uses browser **localStorage** to persist user-specific workout information.
-
-The application stores:
-
-```text
-today_plan
-saved_workouts
-completed_workouts
-```
-
-This allows users to keep their workout data after refreshing or reopening the application without requiring an account or database.
-
----
-
 ## 🎯 Project Goals
 
-This project was built to practice and demonstrate modern Next.js development concepts, including:
+This project was built to practice and demonstrate modern web development concepts, including:
 
 * Next.js App Router
 * Server Components
@@ -286,12 +317,34 @@ This project was built to practice and demonstrate modern Next.js development co
 
 ## 👨‍💻 Developer
 
+<div align="center">
+
 ### Fahim Muntasir Rahat
 
+**Frontend Developer | Next.js & TypeScript Learner**
+
 Built as a **Programming Hero assignment project**.
+
+<br />
+
+<a href="https://github.com/fahimrahat58">
+  <img src="https://img.shields.io/badge/GitHub-fahimrahat58-181717?style=for-the-badge&logo=github" alt="GitHub" />
+</a>
+
+</div>
 
 ---
 
 ## 📄 License
 
 This project was created for **educational and learning purposes**.
+
+---
+
+<div align="center">
+
+### ⭐ Thanks for visiting FitLog!
+
+**Train with intent. Log every set.**
+
+</div>
