@@ -14,23 +14,41 @@ export default function ActionButtons({ workout }: ActionButtonsProps) {
   const [isAdded, setIsAdded] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
-  const checkPlanFull = () => {
-    try {
-      const storedPlan: Workout[] = JSON.parse(
-        localStorage.getItem("today_plan") || "[]",
-      );
-
-      setPlanFull(storedPlan.length >= 5 && !isAdded);
-    } catch {
-      setPlanFull(false);
-    }
-  };
-
   useEffect(() => {
-    checkPlanFull();
+    const loadStorageState = () => {
+      try {
+        const storedPlan: Workout[] = JSON.parse(
+          localStorage.getItem("today_plan") || "[]",
+        );
+
+        const storedSaved: Workout[] = JSON.parse(
+          localStorage.getItem("saved_workouts") || "[]",
+        );
+
+        const added = storedPlan.some(
+          (item) => String(item.id) === String(workout.id),
+        );
+
+        const saved = storedSaved.some(
+          (item) => String(item.id) === String(workout.id),
+        );
+
+        setIsAdded(added);
+        setIsSaved(saved);
+        setPlanFull(storedPlan.length >= 5 && !added);
+      } catch (error) {
+        console.error("Error reading localStorage:", error);
+
+        setIsAdded(false);
+        setIsSaved(false);
+        setPlanFull(false);
+      }
+    };
+
+    loadStorageState();
 
     const handleStorageUpdate = () => {
-      checkPlanFull();
+      loadStorageState();
     };
 
     window.addEventListener("storage-update", handleStorageUpdate);
@@ -40,7 +58,7 @@ export default function ActionButtons({ workout }: ActionButtonsProps) {
       window.removeEventListener("storage-update", handleStorageUpdate);
       window.removeEventListener("storage", handleStorageUpdate);
     };
-  }, [isAdded]);
+  }, [workout.id]);
 
   const triggerStorageUpdate = () => {
     window.dispatchEvent(new Event("storage-update"));
@@ -73,8 +91,8 @@ export default function ActionButtons({ workout }: ActionButtonsProps) {
       }
 
       if (storedPlan.length >= 5) {
-        toast.error("Plan is full! Maximum 5 workouts allowed.");
         setPlanFull(true);
+        toast.error("Plan is full! Maximum 5 workouts allowed.");
         return;
       }
 
@@ -139,6 +157,7 @@ export default function ActionButtons({ workout }: ActionButtonsProps) {
       <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3">
         <button
           onClick={handleAddToPlan}
+          disabled={planFull && !isAdded}
           className={`w-full md:w-auto font-black text-xs md:text-sm uppercase tracking-wide py-3.5 px-6 rounded-xl transition duration-200 flex items-center justify-center gap-2 ${
             isAdded
               ? "bg-[#ccff00] text-black hover:bg-[#b8e600] cursor-pointer"
@@ -146,7 +165,6 @@ export default function ActionButtons({ workout }: ActionButtonsProps) {
                 ? "bg-neutral-700 text-neutral-400 cursor-not-allowed"
                 : "bg-[#ccff00] hover:bg-[#b8e600] active:scale-[0.98] text-black cursor-pointer shadow-lg shadow-[#ccff00]/10"
           }`}
-          disabled={planFull && !isAdded}
         >
           {isAdded ? (
             <>

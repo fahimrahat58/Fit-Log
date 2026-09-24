@@ -12,7 +12,7 @@ import {
   ListChecks,
 } from "lucide-react";
 
-import { getWorkouts } from "@/app/lib/workout";
+import { getWorkoutById } from "@/app/lib/workout";
 import ActionButtons from "@/app/workout/[id]/ActionButtons";
 
 interface WorkoutDetailsPageProps {
@@ -26,8 +26,7 @@ export default async function WorkoutDetailsPage({
 }: WorkoutDetailsPageProps) {
   const { id } = await params;
 
-  const workouts = await getWorkouts();
-  const workout = workouts.find((item) => String(item.id) === String(id));
+  const workout = await getWorkoutById(id);
 
   if (!workout) {
     notFound();
@@ -90,26 +89,31 @@ export default async function WorkoutDetailsPage({
                     label="Equipment"
                     value={workout.equipment}
                   />
+
                   <SpecRow
                     icon={<BarChart3 size={14} />}
                     label="Difficulty"
                     value={workout.difficulty || "Intermediate"}
                   />
+
                   <SpecRow
                     icon={<ListChecks size={14} />}
                     label="Sets"
                     value={String(workout.sets || 4)}
                   />
+
                   <SpecRow
                     icon={<Repeat size={14} />}
                     label="Reps"
                     value={workout.reps || "6 - 8"}
                   />
+
                   <SpecRow
                     icon={<Clock3 size={14} />}
                     label="Duration"
                     value={`${workout.duration} min`}
                   />
+
                   <SpecRow
                     icon={<Flame size={14} />}
                     label="Calories"
@@ -181,6 +185,7 @@ function SpecRow({
     >
       <div className="flex items-center gap-2 text-neutral-400">
         <span>{icon}</span>
+
         <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider">
           {label}
         </span>
