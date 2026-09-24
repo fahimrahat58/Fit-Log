@@ -75,7 +75,7 @@ export default function ActionButtons({ workout }: ActionButtonsProps) {
       <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3">
         <button
           onClick={handleAddToPlan}
-          className="w-full md:w-auto bg-[#ccff00] hover:bg-[#b8e600] active:scale-[0.98] text-black font-black text-xs md:text-sm uppercase tracking-wide py-3.5 px-6 rounded-full transition duration-200 flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-[#ccff00]/10"
+          className="w-full md:w-auto bg-[#ccff00] hover:bg-[#b8e600] active:scale-[0.98] text-black font-black text-xs md:text-sm uppercase tracking-wide py-3.5 px-6 rounded-xl transition duration-200 flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-[#ccff00]/10"
         >
           <Plus size={18} strokeWidth={3} />
           <span>Add to today's plan</span>
@@ -83,7 +83,7 @@ export default function ActionButtons({ workout }: ActionButtonsProps) {
 
         <button
           onClick={handleSaveForLater}
-          className="w-full md:w-auto bg-[#161822] hover:bg-[#1f2230] active:scale-[0.98] border border-[#252938] text-neutral-200 font-bold text-xs md:text-sm py-3.5 px-6 rounded-full transition duration-200 flex items-center justify-center gap-2 cursor-pointer"
+          className="w-full md:w-auto bg-transparent border border-[#2a2e3d] hover:bg-[#1f2230] active:scale-[0.98]  text-neutral-200 font-bold text-xs md:text-sm py-3.5 px-6 rounded-xl transition duration-200 flex items-center justify-center gap-2 cursor-pointer"
         >
           <Bookmark size={16} />
           <span>Save for later</span>
