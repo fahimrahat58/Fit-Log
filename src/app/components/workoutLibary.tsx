@@ -61,7 +61,6 @@ export default async function WorkoutLibrary() {
               </div>
 
               <div className="pt-3 border-t border-neutral-800/60 flex items-center gap-5 text-xs text-neutral-400 font-medium">
-                {/* Duration */}
                 <span className="flex items-center gap-1.5">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

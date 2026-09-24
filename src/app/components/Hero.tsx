@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowDown } from "lucide-react";
-
 import heroImg from "@/app/assets/banner.png";
 
 export default function Hero() {
