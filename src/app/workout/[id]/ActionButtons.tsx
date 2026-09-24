@@ -14,56 +14,33 @@ export default function ActionButtons({ workout }: ActionButtonsProps) {
   const [isAdded, setIsAdded] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
-  const checkPlan = () => {
+  const checkPlanFull = () => {
     try {
       const storedPlan: Workout[] = JSON.parse(
         localStorage.getItem("today_plan") || "[]",
       );
 
-      const exists = storedPlan.some(
-        (item) => String(item.id) === String(workout.id),
-      );
-
-      setIsAdded(exists);
-      setPlanFull(storedPlan.length >= 5 && !exists);
+      setPlanFull(storedPlan.length >= 5 && !isAdded);
     } catch {
-      setIsAdded(false);
       setPlanFull(false);
     }
   };
 
-  const checkSaved = () => {
-    try {
-      const storedSaved: Workout[] = JSON.parse(
-        localStorage.getItem("saved_workouts") || "[]",
-      );
-
-      const exists = storedSaved.some(
-        (item) => String(item.id) === String(workout.id),
-      );
-
-      setIsSaved(exists);
-    } catch {
-      setIsSaved(false);
-    }
-  };
-
   useEffect(() => {
-    checkPlan();
-    checkSaved();
+    checkPlanFull();
 
-    window.addEventListener("storage-update", checkPlan);
-    window.addEventListener("storage", checkPlan);
-    window.addEventListener("storage-update", checkSaved);
-    window.addEventListener("storage", checkSaved);
+    const handleStorageUpdate = () => {
+      checkPlanFull();
+    };
+
+    window.addEventListener("storage-update", handleStorageUpdate);
+    window.addEventListener("storage", handleStorageUpdate);
 
     return () => {
-      window.removeEventListener("storage-update", checkPlan);
-      window.removeEventListener("storage", checkPlan);
-      window.removeEventListener("storage-update", checkSaved);
-      window.removeEventListener("storage", checkSaved);
+      window.removeEventListener("storage-update", handleStorageUpdate);
+      window.removeEventListener("storage", handleStorageUpdate);
     };
-  }, [workout.id]);
+  }, [isAdded]);
 
   const triggerStorageUpdate = () => {
     window.dispatchEvent(new Event("storage-update"));
@@ -80,8 +57,18 @@ export default function ActionButtons({ workout }: ActionButtonsProps) {
       );
 
       if (exists) {
-        setIsAdded(true);
-        toast.warning("Already in today's plan!");
+        const updated = storedPlan.filter(
+          (item) => String(item.id) !== String(workout.id),
+        );
+
+        localStorage.setItem("today_plan", JSON.stringify(updated));
+
+        setIsAdded(false);
+        setPlanFull(updated.length >= 5);
+
+        triggerStorageUpdate();
+
+        toast.warning("Removed from today's plan!");
         return;
       }
 
@@ -102,8 +89,8 @@ export default function ActionButtons({ workout }: ActionButtonsProps) {
 
       toast.success("Added to today's plan!");
     } catch (error) {
-      console.error("Error saving to plan:", error);
-      toast.error("Failed to add workout");
+      console.error("Error updating today's plan:", error);
+      toast.error("Failed to update today's plan");
     }
   };
 
@@ -118,8 +105,17 @@ export default function ActionButtons({ workout }: ActionButtonsProps) {
       );
 
       if (exists) {
-        setIsSaved(true);
-        toast.warning("Already saved for later!");
+        const updated = storedSaved.filter(
+          (item) => String(item.id) !== String(workout.id),
+        );
+
+        localStorage.setItem("saved_workouts", JSON.stringify(updated));
+
+        setIsSaved(false);
+
+        triggerStorageUpdate();
+
+        toast.warning("Removed from saved!");
         return;
       }
 
@@ -133,8 +129,8 @@ export default function ActionButtons({ workout }: ActionButtonsProps) {
 
       toast.success("Saved for later!");
     } catch (error) {
-      console.error("Error saving workout:", error);
-      toast.error("Failed to save workout");
+      console.error("Error updating saved workout:", error);
+      toast.error("Failed to update saved workout");
     }
   };
 
@@ -143,14 +139,14 @@ export default function ActionButtons({ workout }: ActionButtonsProps) {
       <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3">
         <button
           onClick={handleAddToPlan}
-          disabled={planFull || isAdded}
           className={`w-full md:w-auto font-black text-xs md:text-sm uppercase tracking-wide py-3.5 px-6 rounded-xl transition duration-200 flex items-center justify-center gap-2 ${
             isAdded
-              ? "bg-[#ccff00] text-black cursor-default"
+              ? "bg-[#ccff00] text-black hover:bg-[#b8e600] cursor-pointer"
               : planFull
                 ? "bg-neutral-700 text-neutral-400 cursor-not-allowed"
                 : "bg-[#ccff00] hover:bg-[#b8e600] active:scale-[0.98] text-black cursor-pointer shadow-lg shadow-[#ccff00]/10"
           }`}
+          disabled={planFull && !isAdded}
         >
           {isAdded ? (
             <>
@@ -160,19 +156,16 @@ export default function ActionButtons({ workout }: ActionButtonsProps) {
           ) : (
             <>
               <Plus size={18} strokeWidth={3} />
-              <span>
-                {planFull ? "Plan is full" : "Add to today's plan"}
-              </span>
+              <span>{planFull ? "Plan is full" : "Add to today's plan"}</span>
             </>
           )}
         </button>
 
         <button
           onClick={handleSaveForLater}
-          disabled={isSaved}
           className={`w-full md:w-auto font-bold text-xs md:text-sm py-3.5 px-6 rounded-xl transition duration-200 flex items-center justify-center gap-2 ${
             isSaved
-              ? "bg-[#ccff00] border-[#ccff00] text-black cursor-default"
+              ? "bg-[#ccff00] border-[#ccff00] text-black hover:bg-[#b8e600] cursor-pointer"
               : "bg-transparent border border-[#2a2e3d] hover:bg-[#1f2230] active:scale-[0.98] text-neutral-200 cursor-pointer"
           }`}
         >
