@@ -89,7 +89,7 @@ export default function Navbar() {
             >
               <span>Plan</span>
 
-              <span className="bg-[#ccff00] text-black text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+              <span className="min-w-6 px-2 py-1 rounded-full bg-[#ccff00] text-black text-xs font-bold flex items-center justify-center">
                 {planCount}
               </span>
             </Link>
@@ -112,7 +112,7 @@ export default function Navbar() {
                 P {planCount}
               </span>
 
-              <span className="bg-transparent text-white border border-neutral-700 font-bold px-2 py-0.5 rounded-full">
+              <span className="min-w-6 px-2 py-1 rounded-full bg-transparent text-white border border-neutral-700 text-xs font-bold flex items-center justify-center">
                 S {savedCount}
               </span>
             </Link>
